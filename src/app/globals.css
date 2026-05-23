@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-henares-cream text-henares-ink font-sans antialiased;
+  }
+  h1, h2, h3 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-henares-gold hover:bg-henares-goldDark text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap;
+  }
+  .btn-outline {
+    @apply border-2 border-henares-blue text-henares-blue hover:bg-henares-blue hover:text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200;
+  }
+  .section-title {
+    @apply text-3xl md:text-4xl font-serif font-bold text-henares-ink leading-tight;
+  }
+  .card {
+    @apply bg-white rounded-2xl border border-henares-border p-6 shadow-sm;
+  }
+}

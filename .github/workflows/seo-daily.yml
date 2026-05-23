@@ -1,0 +1,68 @@
+name: Daily SEO Optimization
+
+on:
+  schedule:
+    # 6:00 UTC = 8:00 España (verano CEST) / 7:00 España (invierno CET)
+    - cron: '0 6 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      force_meta_update:
+        description: 'Force meta description regeneration'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: write
+
+jobs:
+  seo-optimize:
+    name: Update SEO config
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run daily SEO optimization
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BEEHIIV_PUBLICATION_ID: ${{ secrets.BEEHIIV_PUBLICATION_ID }}
+        run: node scripts/daily-seo.mjs
+
+      - name: Check if SEO config changed
+        id: diff
+        run: |
+          if git diff --quiet seo/config.json; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes detected in seo/config.json"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Changes detected — will commit and push"
+            git diff seo/config.json | head -30
+          fi
+
+      - name: Commit and push updated config
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config --local user.email "seo-bot@henaresdaily.es"
+          git config --local user.name "Henares Daily SEO Bot"
+          git add seo/config.json
+          git commit -m "chore(seo): daily optimization $(date -u +%Y-%m-%d)
+
+          - Refreshed trending keywords from Google Trends (Spain)
+          - Updated Beehiiv newsletter title
+          - Regenerated meta description via Claude API"
+          git push

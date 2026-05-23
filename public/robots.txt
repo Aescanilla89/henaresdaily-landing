@@ -1,0 +1,26 @@
+User-agent: *
+Allow: /
+
+Disallow: /api/
+Disallow: /?ref=*
+Disallow: /unsubscribe
+Disallow: /preferences
+
+# Permitir explícitamente a Googlebot-News
+User-agent: Googlebot-News
+Allow: /
+
+# Permitir rastreo por crawlers de IA para GEO y citaciones
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+Sitemap: https://henaresdaily.es/sitemap.xml
