@@ -7,7 +7,7 @@ interface BeehiivFormProps {
 // TODO: Replace BEEHIIV_PUBLICATION_ID with your actual Beehiiv publication ID
 // Find it in your Beehiiv dashboard: Settings → Publication → Publication ID
 // The embed URL format is: https://embeds.beehiiv.com/YOUR_PUBLICATION_ID
-const BEEHIIV_PUBLICATION_ID = 'pub_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX'
+const BEEHIIV_PUBLICATION_ID = 'c91ac386-e250-4a66-8308-d6931f7291ef'
 
 export default function BeehiivForm({ theme = 'light' }: BeehiivFormProps) {
   const bgColor = theme === 'dark' ? 'transparent' : 'transparent'
